@@ -1,21 +1,26 @@
+// Enum is a custom type
+// It helps to store number values in a map-like way, under human readable identifiers
+// It can be used instead of constants in JS
 
-const person: {
-  name: string;
-  age: number;
-  hobbies: string[];
-  // Tuples can be assigned like this to make sure the array consists of only two values
-  role: [number, string];
-} = {
+enum Role { ADMIN, READ_ONLY, AUTHOR };
+
+// each role will be assigned a number 0, 1, 2 etc.
+
+// enum Role { ADMIN = 5, READ_ONLY, AUTHOR };
+// Own values can be assigned as in the example above, in case of numbers they will be incremented
+
+const person = {
   name: 'John',
   age: 30,
   hobbies: ['Sports', 'Cooking'],
-  role: [2, 'author']
+  role: Role.ADMIN,
 };
 
-// person.role[1] = 10;
-// This code won't work because we can't assing a number as second value
+if (person.role === Role.ADMIN) {
+  console.log('is admin');
+}
 
-// person.role.push('admin');
-// Unfortunately this would work, push is an exception
+
+
 
 
