@@ -1,31 +1,21 @@
-// const person: {
-//   name: string;
-//   age: number;
-// } = {
-//   name: 'John',
-//   age: 30,
-// }
 
-const person = {
+const person: {
+  name: string;
+  age: number;
+  hobbies: string[];
+  // Tuples can be assigned like this to make sure the array consists of only two values
+  role: [number, string];
+} = {
   name: 'John',
   age: 30,
-  hobbies: ['Sports', 'Cooking']
+  hobbies: ['Sports', 'Cooking'],
+  role: [2, 'author']
 };
 
-let favoriteActivities: string[];
-favoriteActivities = ['Sports'];
+// person.role[1] = 10;
+// This code won't work because we can't assing a number as second value
 
-// favoriteActivities = ['Sports', 1];
-// To create a mixed array we can use 'any': let favoriteActivities: any[];
-// 'Any' shouldn' be used too often
+// person.role.push('admin');
+// Unfortunately this would work, push is an exception
 
-console.log(person.name);
 
-for (const hobby of person.hobbies) {
-  // TypeScript detects that hobbies are strings and allows to do everything 
-  // that can be done to a string
-  console.log(hobby.toUpperCase());
-
-  // This throws an ERROR!
-  // console.log(hobby.map());
-}
