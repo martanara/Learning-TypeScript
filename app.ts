@@ -1,26 +1,18 @@
-// Enum is a custom type
-// It helps to store number values in a map-like way, under human readable identifiers
-// It can be used instead of constants in JS
+// Union types are a way to work with muliple types within one function.
+// We can add as many types we want
 
-enum Role { ADMIN, READ_ONLY, AUTHOR };
-
-// each role will be assigned a number 0, 1, 2 etc.
-
-// enum Role { ADMIN = 5, READ_ONLY, AUTHOR };
-// Own values can be assigned as in the example above, in case of numbers they will be incremented
-
-const person = {
-  name: 'John',
-  age: 30,
-  hobbies: ['Sports', 'Cooking'],
-  role: Role.ADMIN,
-};
-
-if (person.role === Role.ADMIN) {
-  console.log('is admin');
+function combine (input1: number | string, input2: number | string) {
+  let result;
+  if (typeof input1 === 'number' && typeof input2 === 'number') {
+    result = input1 + input2;
+  } else {
+    result = input1.toString() + input2.toString();
+  }
+  return result;
 }
 
+const combinedAges = combine(20, 60);
+console.log(combinedAges);
 
-
-
-
+const combinedNames = combine('Max', 'Nadine');
+console.log(combinedNames);
