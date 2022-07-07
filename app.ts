@@ -1,27 +1,29 @@
-// Type Aliases - store types
+function add(n1: number, n2: number) {
+  return n1 + n2;
+};
 
-type Combinable = number | string;
-type ConversionDescriptor = 'as-number' | 'as-text';
+// return type = 'void'
+function printResult(num: number) {
+  console.log('Result ' + num);
+};
 
-function combine (
-  input1: Combinable, 
-  input2: Combinable, 
-  resultConversion: ConversionDescriptor
-  ) {
-  let result;
-  if (typeof input1 === 'number' && typeof input2 === 'number' || resultConversion === 'as-number') {
-    result = +input1 + +input2;
-  } else {
-    result = input1.toString() + input2.toString();
-  }
-  return result;
-}
+function addAndHandle(n1: number, n2: number, cb: (num: number) => void) {
+  const result = n1 + n2;
+  cb(result);
+};
 
-const combinedAges = combine(20, 60, 'as-number');
-console.log(combinedAges);
+printResult(add(5, 12));
 
-const combinedStringAges = combine('20', '60', 'as-number');
-console.log(combinedStringAges);
+// function types
 
-const combinedNames = combine('Max', 'Nadine', 'as-text');
-console.log(combinedNames);
+let combinedValues: (a: number, b: number) => number;
+combinedValues = add;
+
+// TypeScript will complain because we have one argument and nothing is returned
+// combinedValues = printResult;
+
+console.log(combinedValues(8,8));
+
+addAndHandle(10, 20, (result) => {
+  console.log(result);
+});
