@@ -1,18 +1,25 @@
-// Union types are a way to work with muliple types within one function.
-// We can add as many types we want
+// Literal type - when you tell TypeScript exactly which value you want (can be combined with literal type)
 
-function combine (input1: number | string, input2: number | string) {
+function combine (input1: number | string, input2: number | string, resultConversion: 'as-number' | 'as-text') {
   let result;
-  if (typeof input1 === 'number' && typeof input2 === 'number') {
-    result = input1 + input2;
+  if (typeof input1 === 'number' && typeof input2 === 'number' || resultConversion === 'as-number') {
+    result = +input1 + +input2;
   } else {
     result = input1.toString() + input2.toString();
   }
   return result;
+  // if (resultConversion === 'as-number') {
+  //   return +result;
+  // } else {
+  //   return result.toString();
+  // }
 }
 
-const combinedAges = combine(20, 60);
+const combinedAges = combine(20, 60, 'as-number');
 console.log(combinedAges);
 
-const combinedNames = combine('Max', 'Nadine');
+const combinedStringAges = combine('20', '60', 'as-number');
+console.log(combinedStringAges);
+
+const combinedNames = combine('Max', 'Nadine', 'as-text');
 console.log(combinedNames);
