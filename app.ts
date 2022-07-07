@@ -1,29 +1,25 @@
-function add(n1: number, n2: number) {
-  return n1 + n2;
+// Unknown is better than any - there is some type checking
+
+let userInput: unknown;
+let userName: string;
+
+userInput = 5;
+userInput = 'Max';
+
+// the code below would work with 'any' but won't work with unknown unless we do a check
+// userName = userInput;
+
+if (typeof userInput === 'string') {
+  userName = userInput;
+}
+
+function generateError(message: string, code: number): never {
+  throw { message: message, errorCode: code };
+  // while (true) {}
 };
 
-// return type = 'void'
-function printResult(num: number) {
-  console.log('Result ' + num);
-};
+// In case of error the function doesn't return 'undefined' because the error crashes the code
+// We can assign 'never' to let other developers know that this function will crash the code
+// infinite loops will also result in never
 
-function addAndHandle(n1: number, n2: number, cb: (num: number) => void) {
-  const result = n1 + n2;
-  cb(result);
-};
-
-printResult(add(5, 12));
-
-// function types
-
-let combinedValues: (a: number, b: number) => number;
-combinedValues = add;
-
-// TypeScript will complain because we have one argument and nothing is returned
-// combinedValues = printResult;
-
-console.log(combinedValues(8,8));
-
-addAndHandle(10, 20, (result) => {
-  console.log(result);
-});
+generateError('An error occurred', 500);
