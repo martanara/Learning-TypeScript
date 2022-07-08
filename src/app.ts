@@ -1,78 +1,40 @@
-// Let & const
+class Department {
+  // name : string;
+  // proivate readonly id: number;
+  private employees: string[] = [];
 
-const userName = 'Max';
-// userName = 'Maximilian'
-// not allowed because of contant
+  // 'private' keyword makes properties only accessible within the class department
+  // So we cannot use: Department.employees.push('Anna);
+  // JS only knows private / public in the latest versions
 
-var result;
-// TypeScript won't complain there's no type becasue it can detect the assignement below
-// this is not possible with "let"
+  // easier way for declaring properties using constructor 
+  constructor(private readonly id: number, public name: string) {
+    // this.name = n;
+  }
 
-function add (a: number, b: number) {
-  result = a + b;
-  return result;
+  // this with type of class makes it easier to catch an error when we are calling the method outside of class instance
+  describe(this: Department) {
+    console.log(`Department no: ${this.id}, name: ${this.name}`);
+  }
+
+  addEmployee(employee: string) {
+    this.employees.push(employee);
+  }
+
+  printEmployeeInformation() {
+    console.log(this.employees.length);
+    console.log(this.employees);
+  }
 };
 
-add(2, 5);
+const accounting = new Department(1, 'Accounting');
+console.log(accounting);
 
-console.log(result);
+accounting.addEmployee('Max');
+accounting.addEmployee('Manu');
 
-// Arrow function & default parameters
-const addTwo = (a: number, b: number = 1) => a + b;
-// Default parameters always need to be last
+accounting.describe();
+accounting.printEmployeeInformation();
 
-const printOutput: (a: number | string) => void = output => console.log(output);
-// This is an example of function type assigned to a constant
-
-printOutput(addTwo(5));
-
-// Spread operator
-
-const hobbies = ['Sports', 'Cooking'];
-const activeHobbies = ['Hiking', ...hobbies];
-
-console.log(activeHobbies);
-
-// Arrays are objects. 
-// When we push or add something we change the memory but not the adress
-
-const person = {
-  firstName: 'Valerie',
-  age: 29
-};
-
-// const copiedPerson = person;
-// I nthe above we're copying the pointer at this person object in memory, into this copyPerson constant
-// We're not really creating a copy of this object
-
-const copiedPerson = { ...person };
-
-// This gives us a perfect copy of the key/value pairs, not just the pointer
-
-console.log(copiedPerson);
-
-// Rest parameters, we can use spreading for unknown number of parameters
-
-const addMany = (...numbers: number[]) => {
-  return numbers.reduce((currentResult, currentValue) => {
-    return currentResult + currentValue;
-  }, 0);
-};
-
-const addedNumbers = addMany(2, 7, 13, 4.5);
-console.log(addedNumbers);
-
-// Array and object destructuring
-
-// const hobby1 = hobbies[0];
-// const hobby2 = hobbies[1];
-
-const [hobby1, hobby2, ...remainingHobbies] = hobbies; 
-// destructuring means that you are pulling elements out of array
-
-console.log(hobbies, hobby1, hobby2);
-
-const { firstName, age } = person;
-console.log(firstName, age);
-
-// This pulls values for these keys and stores them in constants of the same name
+// const accountingCopy = { describe: accounting.describe }
+// accountingCopy.describe();
