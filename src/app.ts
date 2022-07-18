@@ -1,132 +1,86 @@
-abstract class Department {
-  // name : string;
-  // private readonly id: number;
-  protected employees: string[] = [];
+// Interfaces only exist in TypeScript
+// Interfaces are used to define objects
 
-  // static values can be accessed from outside the class but cannot be accessed within the class
-  static fiscalYear = 2022;
+// Interfaces and custom types can be used interchangeably sometimes but there are differences
 
-  // 'private' keyword makes properties only accessible within the class department
-  // So we cannot use: Department.employees.push('Anna);
-  // JS only knows private / public in the latest versions
-  // 'protected' makes a property available for classes that inherit after the parent
+interface Someone {
+  name: string;
+  readonly age: number;
+  // We can use readonly
 
-  // easier way for declaring properties using constructor 
-  constructor (protected readonly id: number, public name: string) {
-    // this.name = n;
+  greet(phrase: string): void;
+}
+
+let user1: Someone;
+
+user1 = {
+  name: 'Max',
+  age: 23,
+  greet(phrase: string) {
+    console.log(phrase + ' ' + this.name)
+  }
+}
+
+user1.greet('Hi there - I am');
+
+interface Named {
+  name: string;
+  // ? means the parameter is optional, this works on class too
+  outputName?: string;
+}
+
+// Extending interfaces is also possible
+interface Greetable extends Named {
+  greet(phrase: string): void;
+}
+
+// Classes can impement multiple interfaces (sperate by commas)
+class Person implements Greetable {
+  // Classes can have other variables & functions
+  name: string;
+  occupation?: string;
+  readonly age: number = 30;
+  
+  constructor(n: string, o?: string) {
+    this.name = n;
+    if (o) {
+      this.occupation = o;
+    }
   }
 
-  // Static methods can be called outside of class instance
-  static createEmployee(name: string) {
-    return { name: name }
+  greet(phrase: string) {
+    if (this.occupation) {
+      console.log(phrase + ' ' + this.name + ', ' + 'I am a' + ' ' + this.occupation)
+    } else {
+      console.log(phrase + ' ' + this.name)
+    }
   }
+}
 
-  // abstract classes force children classes to create their own implementaion
+let user2: Greetable;
+// We cannot store in user one anything that doesn't have a greet method
 
-  abstract describe(this: Department): void;
+user2 = new Person('Marta', 'programmer');
+console.log(user2);
+user2.greet('Hi there - I am');
 
-  // 'this' with type of class makes it easier to catch an error when we are calling the method outside of class instance
-  // describe(this: Department) {
-  //   console.log(`Department no: ${this.id}, name: ${this.name}`);
-  // }
+// Interfaces can store functions (using custom type is probably more often)
 
-  addEmployee(employee: string) {
-    this.employees.push(employee);
-  }
+// type AddFn = (a: number, b: number) => number;
 
-  printEmployeeInformation() {
-    console.log(this.employees.length);
-    console.log(this.employees);
-  }
+// let add: AddFn;
+
+// add = (n1: number, n2: number) => {
+//   return n1 + n2;
+// };
+
+interface AddFn {
+  (a: number, b: number): number;
+}
+
+let add: AddFn;
+
+add = (n1: number, n2: number) => {
+  return n1 + n2;
 };
 
-class ITDepartment extends Department {
-  constructor(id: number, public admins: string[]) {
-    super(id, 'IT');
-    this.admins = admins;
-  }
-
-  describe() {
-    console.log(`IT department Id: ${this.id}`);
-  }
-}
-
-class AccountingDepartment extends Department {
-  private lastReport: string;
-  private static instance: AccountingDepartment;
-
-  // private constructor makes sure that the class is a 'singleton' (only one instance of it exists)
-  private constructor(id: number, private reports: string[]) {
-    super(id, 'Accounting');
-    this.lastReport = reports[0];
-  }
-
-  static getInstance() {
-    if (this.instance) {
-      return this.instance;
-    }
-    return this.instance = new AccountingDepartment(1, ['Something went wrong...']);
-  }
-
-  get mostRecentReport() {
-    if (this.lastReport) {
-      return this.lastReport;
-    }
-    throw new Error('No report found.')
-  };
-
-  set mostRecentReport(value: string) {
-    if (!value) {
-      throw new Error('Pass in a valid value!')
-    } 
-    this.addReport(value);
-  }
-
-  describe() {
-    console.log(`Accounting department Id: ${this.id}`);
-  }
-
-  //overriding parent class method
-  addEmployee(name: string) {
-    if (name === 'Max') {
-      return;
-    }
-    this.employees.push(name);
-  }
-
-  addReport(text: string) {
-    this.reports.push(text);
-    this.lastReport = text;
-  }
-
-  printReports() {
-    console.log(this.reports);
-  }
-}
-
-const employee1 = Department.createEmployee('Marta');
-
-console.log(employee1);
-console.log(Department.fiscalYear)
-
-const accounting = AccountingDepartment.getInstance();
-console.log(accounting);
-
-accounting.addEmployee('Max');
-accounting.addEmployee('Manu');
-
-accounting.describe();
-accounting.printEmployeeInformation();
-
-const it = new ITDepartment(2, ['Max']);
-console.log(it);
-it.describe();
-
-accounting.mostRecentReport = 'Year End Report';
-console.log(accounting.mostRecentReport);
-
-
-
-
-// const accountingCopy = { describe: accounting.describe }
-// accountingCopy.describe();
