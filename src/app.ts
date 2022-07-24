@@ -1,14 +1,19 @@
-// A genercit type is a type in itself but also carries data (although it doesn't care what type of data)
-// It does care about some type of data (even any)
+function merge(objA: object, objB: object) {
+  return Object.assign(objA, objB);
+}
 
-const names: Array<string> = ['Max', 'Manuel']; // string[] - it's exactly the same
-const mixed: Array<string | number> = ['Max', 3];
+const mergedObject = merge({name: 'Max'}, {age: 30});
+// console.log(mergedObject.name) => this won't work because TypeScript doesn't know about the property
 
-const promise: Promise<string> = new Promise((resolve) => {
-  setTimeout(() => {
-    resolve('This is done');
-  }, 2000);
-});
+// Generic funtion, typically while naming we start with T (as type) and then go alphabeticalle
+function newMerge<T, U>(objA: T, objB: U) {
+  return Object.assign(objA, objB);
+}
 
-// We can say to typeScript that this promise will return a string. this way we can set a data about
+// We are telling TypeScript that the parameters will change dynamically
+// we don't have to add any more specific information
+
+const newMergedObject = newMerge({name: 'Max'}, {age: 30});
+console.log(newMergedObject.name) // now it works becasue TypeScript knows about the object intersection
+
 
