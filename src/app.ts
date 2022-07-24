@@ -1,19 +1,27 @@
-function merge(objA: object, objB: object) {
+// Contraints help us set a specific type
+
+function newMerge<T extends object, U extends object>(objA: T, objB: U) {
   return Object.assign(objA, objB);
 }
-
-const mergedObject = merge({name: 'Max'}, {age: 30});
-// console.log(mergedObject.name) => this won't work because TypeScript doesn't know about the property
-
-// Generic funtion, typically while naming we start with T (as type) and then go alphabeticalle
-function newMerge<T, U>(objA: T, objB: U) {
-  return Object.assign(objA, objB);
-}
-
-// We are telling TypeScript that the parameters will change dynamically
-// we don't have to add any more specific information
 
 const newMergedObject = newMerge({name: 'Max'}, {age: 30});
-console.log(newMergedObject.name) // now it works becasue TypeScript knows about the object intersection
+console.log(newMergedObject.name); 
 
+// We use interface to ensure that we have a length property
+interface Lengthy {
+  length: number;
+}
 
+// We use contraint to make sure the parameter has length property
+function countAndPrint<T extends Lengthy>(element: T): [T, string] {
+  let descriptionText = 'Got no value';
+  if (element.length === 0) {
+    descriptionText = 'Got 1 element.'
+  } else if ((element.length > 0)) {
+    descriptionText = 'Got ' + element.length + ' elements.'
+  }
+  return [element, descriptionText];
+}
+
+console.log(countAndPrint("Hi there!"));
+console.log(countAndPrint(['Cooking', 'Sports']));
