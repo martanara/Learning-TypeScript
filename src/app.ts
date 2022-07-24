@@ -25,3 +25,10 @@ function countAndPrint<T extends Lengthy>(element: T): [T, string] {
 
 console.log(countAndPrint("Hi there!"));
 console.log(countAndPrint(['Cooking', 'Sports']));
+
+// keyof makes sure that the object has a key of U
+function extractAndConvert<T extends object, U extends keyof T>(obj: T, key: U) {
+  return 'Value: ' + obj[key];
+}
+
+console.log(extractAndConvert({name: 'Max', age: 30}, 'name'));
