@@ -1,37 +1,26 @@
-// with generic classes we don't have to say what types of arguments we want
+// Built-in utility: 'Partial'
 
-class DataStorage<T extends string | number | boolean > {
-  // making sure that we work with primitive values (otherwise 'remove' won't work)
-  private data: T[] = [];
-
-  addItem(item: T) {
-    this.data.push(item);
-  }
-  removeItem(item: T) {
-    if (this.data.indexOf(item) === -1) {
-      return;
-    }
-    this.data.splice(this.data.indexOf(item), 1)
-  }
-
-  getItems() {
-    return [...this.data];
-  }
+interface CourseGoal {
+  title: string;
+  description: string;
+  completeUntil: Date;
 }
 
-const textStorage = new DataStorage<string>();
-textStorage.addItem('Marta');
-textStorage.addItem('Lana');
-textStorage.addItem('Roberta');
-textStorage.removeItem('Roberta');
-console.log(textStorage.getItems());
+function createCourseGoal(
+  title: string, 
+  description: string, 
+  date: Date): CourseGoal {
+  let courseGoal: Partial<CourseGoal> = {};
+  courseGoal.title = title;
+  courseGoal.description = description;
+  courseGoal.completeUntil = date;
+  return courseGoal as CourseGoal;
+} 
 
-const numberStorage = new DataStorage<number>();
-numberStorage.addItem(10);
-numberStorage.addItem(20);
-numberStorage.addItem(30);
-numberStorage.removeItem(30);
-console.log(numberStorage.getItems());
+// Partial - built-in feature of TypeScript - makes all the properties optional (in the end we need to type cast to the proper type)
 
-// textStorage.addItem(10); 
-// this will throw an error because we're saying that the type in this case will be a string
+// Built-in utility: 'Readonly' - gives extra strickness
+
+const names: Readonly<string[]> = ['Max', 'Anna'];
+// names.push('Sara'); - error
+
