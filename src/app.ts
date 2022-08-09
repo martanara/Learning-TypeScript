@@ -1,34 +1,37 @@
-// Contraints help us set a specific type
+// with generic classes we don't have to say what types of arguments we want
 
-function newMerge<T extends object, U extends object>(objA: T, objB: U) {
-  return Object.assign(objA, objB);
-}
+class DataStorage<T extends string | number | boolean > {
+  // making sure that we work with primitive values (otherwise 'remove' won't work)
+  private data: T[] = [];
 
-const newMergedObject = newMerge({name: 'Max'}, {age: 30});
-console.log(newMergedObject.name); 
-
-// We use interface to ensure that we have a length property
-interface Lengthy {
-  length: number;
-}
-
-// We use contraint to make sure the parameter has length property
-function countAndPrint<T extends Lengthy>(element: T): [T, string] {
-  let descriptionText = 'Got no value';
-  if (element.length === 0) {
-    descriptionText = 'Got 1 element.'
-  } else if ((element.length > 0)) {
-    descriptionText = 'Got ' + element.length + ' elements.'
+  addItem(item: T) {
+    this.data.push(item);
   }
-  return [element, descriptionText];
+  removeItem(item: T) {
+    if (this.data.indexOf(item) === -1) {
+      return;
+    }
+    this.data.splice(this.data.indexOf(item), 1)
+  }
+
+  getItems() {
+    return [...this.data];
+  }
 }
 
-console.log(countAndPrint("Hi there!"));
-console.log(countAndPrint(['Cooking', 'Sports']));
+const textStorage = new DataStorage<string>();
+textStorage.addItem('Marta');
+textStorage.addItem('Lana');
+textStorage.addItem('Roberta');
+textStorage.removeItem('Roberta');
+console.log(textStorage.getItems());
 
-// keyof makes sure that the object has a key of U
-function extractAndConvert<T extends object, U extends keyof T>(obj: T, key: U) {
-  return 'Value: ' + obj[key];
-}
+const numberStorage = new DataStorage<number>();
+numberStorage.addItem(10);
+numberStorage.addItem(20);
+numberStorage.addItem(30);
+numberStorage.removeItem(30);
+console.log(numberStorage.getItems());
 
-console.log(extractAndConvert({name: 'Max', age: 30}, 'name'));
+// textStorage.addItem(10); 
+// this will throw an error because we're saying that the type in this case will be a string
