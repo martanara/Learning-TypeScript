@@ -1,4 +1,4 @@
-// Decorator Factory - allows us to customize the decorator function
+// A common usage in Angular
 
 function Logger(logString: string) {
   return function(constructor: Function) {
@@ -7,10 +7,18 @@ function Logger(logString: string) {
   }
 }
 
-// Whatever is after the @ mark should point at a decorator (not execute it!)
-// Decorators runs when JS finds the class definition (not when you use the contructor)
+function WithTemplate(template: string, hookId: string) {
+  return function(_: Function) {
+    // the underscore tells typescript we won't use the argument
+    const hookEl = document.getElementById(hookId)
+    if (hookEl) {
+      hookEl.innerHTML = template;
+    }
+  }
+}
 
-@Logger('LOGGING - PERSON')
+// @Logger('LOGGING - PERSON')
+@WithTemplate('<h1>My person object</h1>', 'app')
 class Person {
   name = 'Max'
 
